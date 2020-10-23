@@ -5,9 +5,12 @@ import WelcomeScreen from './welcome-screen';
 import Login from './login';
 import ResultSuccess from './result-success';
 import ResultFail from './result-fail';
+import GameScreen from './game-screen';
+import ArtistGame from './artist-game';
+import GenreGame from './genre-game';
 
 const App = (props) => {
-  const {errorCount} = props;
+  const {errorCount, games} = props;
 
   return <BrowserRouter>
     <Switch>
@@ -23,9 +26,14 @@ const App = (props) => {
       <Route path='/lose' exact>
         <ResultFail />
       </Route>
-      <Route path='/dev-artist' exact>
+      <Route path='/game' exact>
+        <GameScreen games={games} />
       </Route>
-      <Route path='/dev-genre' exact>
+      <Route path='/artist' exact>
+        <ArtistGame />
+      </Route>
+      <Route path='/genre' exact>
+        <GenreGame />
       </Route>
       <Route>
         <h1>404</h1>
@@ -35,7 +43,26 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  errorCount: PropTypes.number.isRequired
+  errorCount: PropTypes.number.isRequired,
+  games: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        style: PropTypes.string,
+        songs: PropTypes.arrayOf(
+            PropTypes.shape({
+              src: PropTypes.string.isRequired,
+              artist: PropTypes.string,
+              style: PropTypes.string
+            }).isRequired
+        ),
+        answers: PropTypes.arrayOf(
+            PropTypes.shape({
+              artist: PropTypes.string.isRequired,
+              picture: PropTypes.string.isRequired
+            }).isRequired
+        )
+      })
+  )
 };
 
 export default App;
