@@ -35,9 +35,9 @@ class GenreGame extends PureComponent {
   handleFormSubmit(evt) {
     evt.preventDefault();
 
-    this.props.onAnswer();
+    const {game} = this.props;
 
-    return {question: this.style, answers: this.state.answers};
+    this.props.onAnswer(this.state.answers, game.style);
   }
 
   render() {

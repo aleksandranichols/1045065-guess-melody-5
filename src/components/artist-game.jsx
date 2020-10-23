@@ -15,27 +15,23 @@ class ArtistGame extends PureComponent {
       answer: ``
     };
 
-    this.artist = ``;
-
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   handleFormSubmit(evt) {
     evt.preventDefault();
 
+    const {game} = this.props;
+
     const {value} = evt.target;
     this.setState({answer: value});
 
-    this.props.onAnswer();
-
-    return {artist: this.artist, answer: this.state.answer};
+    this.props.onAnswer(this.state.answer, game.songs.artist);
   }
 
   render() {
     const {game} = this.props;
     const {type, songs, answers} = game;
-
-    this.artist = songs.artist;
 
     return <section className={`game game--${type}`}>
       <header className="game__header">
