@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
+import AudioPlayer from './audio-player';
+
 const circleStyle = {
   filter: `url(#blur)`,
   tranform: `rotate(-90deg) scaleY(-1)`,
@@ -13,12 +15,14 @@ class GenreGame extends PureComponent {
 
     this.state = {
       answers: [],
+      whichIsPlaying: null
     };
 
     this.style = ``;
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.updatePlayerIndex = this.updatePlayerIndex.bind(this);
   }
 
   _addAnswer(value) {
@@ -38,6 +42,10 @@ class GenreGame extends PureComponent {
     const {game} = this.props;
 
     this.props.onAnswer(this.state.answers, game.style);
+  }
+
+  updatePlayerIndex(index) {
+    this.setState({whichIsPlaying: index});
   }
 
   render() {
@@ -69,12 +77,8 @@ class GenreGame extends PureComponent {
         <form className="game__tracks" onSubmit={this.handleFormSubmit}>
           {songs.map((song, i) =>
             <div key={song.style} className="track">
-              <button className="track__button track__button--play" type="button"></button>
-              <div className="track__status">
-                <audio>
-                  <source src={song.src} type="audio/ogg" />
-                </audio>
-              </div>
+              <AudioPlayer songSrc={song.src} updatePlayerIndex={this.updatePlayerIndex}
+                whichIsPlaying={this.state.whichIsPlaying} i={i} />
               <div className="game__answer">
                 <input className="game__input visually-hidden" onChange={this.handleInputChange} type="checkbox" name="answer"
                   value={`answer-${i}`} id={`answer-${i}`} />
